@@ -54,7 +54,7 @@ export ASAN_OPTIONS=handle_segv=0
 
 create_file 4K $DIR/testfile1
 expect_normal_exit ./pmem_map_file$EXESUFFIX \
-	$DIR/testfile1 2*4096 CES 0666 1 1 0
+	$DIR/testfile1 8192 CES 0666 1 1 0
 
 check_files $DIR/testfile1
 
