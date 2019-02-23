@@ -56,7 +56,7 @@ create_file 4K $DIR/testfile1
 expect_normal_exit ./pmem_map_file$EXESUFFIX \
 	$DIR\testfile1 4096 CE 0666 1 1 17
 
-check_no_file $DIR\testfile1
+check_file $DIR\testfile1
 
 check
 

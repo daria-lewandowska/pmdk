@@ -17,3 +17,6 @@ parsers:
       loop: false
       method: false
       macro: false
+      
+codecov:
+  token: f58668bd-f84b-4150-822b-856590ffddf1
