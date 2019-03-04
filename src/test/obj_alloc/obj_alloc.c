@@ -83,7 +83,7 @@ main(int argc, char *argv[])
 	size_t size;
 	uint64_t type_num;
 	int is_oid_null;
-	int flags;
+	uint64_t flags;
 	int expected_return_code;
 	int expected_errno;
 	int ret;
@@ -108,7 +108,7 @@ main(int argc, char *argv[])
 		expected_return_code = atoi(argv[i + 5]);
 		expected_errno = atoi(argv[i + 6]);
 
-		UT_OUT("%s %zu %lu %d %d %d %d",	path, size, type_num,
+		UT_OUT("%s %zu %lu %zu %d %d %d",	path, size, type_num,
 		is_oid_null, flags, expected_return_code, expected_errno);
 
 		TOID(struct root) root = POBJ_ROOT(pop, struct root);

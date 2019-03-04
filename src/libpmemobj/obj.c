@@ -273,12 +273,6 @@ pmemobj_oid(const void *addr)
 }
 
 /*
- * User may decide to map all pools with MAP_PRIVATE flag using
- * PMEMOBJ_COW environment variable.
- */
-static int Open_cow;
-
-/*
  * obj_init -- initialization of obj
  *
  * Called by constructor.
@@ -301,11 +295,6 @@ obj_init(void)
 
 	COMPILE_ERROR_ON(PMEMOBJ_F_MEM_NOFLUSH != PMEM_F_MEM_NOFLUSH);
 
-#ifdef USE_COW_ENV
-	char *env = os_getenv("PMEMOBJ_COW");
-	if (env)
-		Open_cow = atoi(env);
-#endif
 
 #ifdef _WIN32
 	/* XXX - temporary implementation (see above) */
@@ -1821,7 +1810,8 @@ pmemobj_openU(const char *path, const char *layout)
 {
 	LOG(3, "path %s layout %s", path, layout);
 
-	return obj_open_common(path, layout, Open_cow ? POOL_OPEN_COW : 0, 1);
+	return obj_open_common(path, layout,
+			COW_at_open ? POOL_OPEN_COW : 0, 1);
 }
 
 #ifndef _WIN32
@@ -2190,7 +2180,7 @@ obj_alloc_construct(PMEMobjpool *pop, PMEMoid *oidp, size_t size,
 	int ret = palloc_operation(&pop->heap, 0,
 			oidp != NULL ? &oidp->off : NULL, size,
 			constructor_alloc, &carg, type_num, 0,
-			CLASS_ID_FROM_FLAG(flags),
+			CLASS_ID_FROM_FLAG(flags), ARENA_ID_FROM_FLAG(flags),
 			ctx);
 
 	pmalloc_operation_release(pop);
@@ -2315,7 +2305,7 @@ obj_free(PMEMobjpool *pop, PMEMoid *oidp)
 	operation_add_entry(ctx, &oidp->pool_uuid_lo, 0, ULOG_OPERATION_SET);
 
 	palloc_operation(&pop->heap, oidp->off, &oidp->off, 0, NULL, NULL,
-			0, 0, 0, ctx);
+			0, 0, 0, 0, ctx);
 
 	pmalloc_operation_release(pop);
 }
@@ -2390,7 +2380,8 @@ obj_realloc_common(PMEMobjpool *pop,
 	struct operation_context *ctx = pmalloc_operation_hold(pop);
 
 	int ret = palloc_operation(&pop->heap, oidp->off, &oidp->off,
-			size, constructor_realloc, &carg, type_num, 0, 0, ctx);
+			size, constructor_realloc, &carg, type_num,
+			0, 0, 0, ctx);
 
 	pmalloc_operation_release(pop);
 
@@ -2830,7 +2821,8 @@ obj_alloc_root(PMEMobjpool *pop, size_t size,
 	int ret = palloc_operation(&pop->heap, pop->root_offset,
 			&pop->root_offset, size,
 			constructor_zrealloc_root, &carg,
-			POBJ_ROOT_TYPE_NUM, OBJ_INTERNAL_OBJECT_MASK, 0, ctx);
+			POBJ_ROOT_TYPE_NUM, OBJ_INTERNAL_OBJECT_MASK,
+			0, 0, ctx);
 
 	pmalloc_operation_release(pop);
 
@@ -2978,7 +2970,7 @@ pmemobj_reserve(PMEMobjpool *pop, struct pobj_action *act,
 	PMEMoid oid = OID_NULL;
 
 	if (palloc_reserve(&pop->heap, size, NULL, NULL, type_num,
-		0, 0, act) != 0) {
+		0, 0, 0, act) != 0) {
 		PMEMOBJ_API_END();
 		return oid;
 	}
@@ -3018,7 +3010,8 @@ pmemobj_xreserve(PMEMobjpool *pop, struct pobj_action *act,
 	carg.arg = NULL;
 
 	if (palloc_reserve(&pop->heap, size, constructor_alloc, &carg,
-		type_num, 0, CLASS_ID_FROM_FLAG(flags), act) != 0) {
+		type_num, 0, CLASS_ID_FROM_FLAG(flags),
+		ARENA_ID_FROM_FLAG(flags), act) != 0) {
 		PMEMOBJ_API_END();
 		return oid;
 	}

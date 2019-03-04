@@ -64,10 +64,10 @@ extern "C" {
 #define OBJ_FORMAT_MAJOR 5
 
 #define OBJ_FORMAT_FEAT_DEFAULT \
-	{0x0000, POOL_FEAT_INCOMPAT_DEFAULT, 0x0000}
+	{POOL_FEAT_COMPAT_DEFAULT, POOL_FEAT_INCOMPAT_DEFAULT, 0x0000}
 
 #define OBJ_FORMAT_FEAT_CHECK \
-	{0x0000, POOL_FEAT_INCOMPAT_VALID, 0x0000}
+	{POOL_FEAT_COMPAT_VALID, POOL_FEAT_INCOMPAT_VALID, 0x0000}
 
 static const features_t obj_format_feat_default = OBJ_FORMAT_FEAT_CHECK;
 
@@ -218,6 +218,9 @@ struct pmemobjpool {
 
 #define CLASS_ID_FROM_FLAG(flag)\
 ((uint16_t)((flag) >> 48))
+
+#define ARENA_ID_FROM_FLAG(flag)\
+((uint16_t)((flag) >> 32))
 
 /*
  * pmemobj_get_uuid_lo -- (internal) evaluates XOR sum of least significant
