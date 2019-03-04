@@ -104,7 +104,7 @@ main(int argc, char *argv[])
 		size = (size_t)check_int(argv[i + 1]);
 		type_num = check_int(argv[i + 2]);
 		is_oid_null = atoi(argv[i + 3]);
-		flags = atoi(argv[i + 4]);
+		flags = (uint64_t)strtoll(argv[i + 4], NULL, 10);
 		expected_return_code = atoi(argv[i + 5]);
 		expected_errno = atoi(argv[i + 6]);
 
