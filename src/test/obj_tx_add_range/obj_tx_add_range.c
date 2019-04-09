@@ -712,12 +712,13 @@ main(int argc, char *argv[])
 		VALGRIND_WRITE_STATS;
 		do_tx_add_range_zero(pop);
 		VALGRIND_WRITE_STATS;
-		do_tx_xadd_range_commit(pop);
-		VALGRIND_WRITE_STATS;
 		do_tx_add_range_null_oid(pop);
 		VALGRIND_WRITE_STATS;
 		do_tx_add_range_offset_too_large(pop);
 		VALGRIND_WRITE_STATS;
+		do_tx_xadd_range_commit(pop);
+		VALGRIND_WRITE_STATS;
+
 		pmemobj_close(pop);
 	}
 
