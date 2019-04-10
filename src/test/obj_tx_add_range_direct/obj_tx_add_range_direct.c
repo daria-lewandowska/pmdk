@@ -691,6 +691,6 @@ main(int argc, char *argv[])
 	do_tx_xadd_range_commit(pop);
 	
 	pmemobj_close(pop);
-
+	
 	DONE(NULL);
 }
