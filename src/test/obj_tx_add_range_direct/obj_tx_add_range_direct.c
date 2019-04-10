@@ -689,8 +689,8 @@ main(int argc, char *argv[])
 	do_tx_add_range_alloc_with_size_0(pop);
 	VALGRIND_WRITE_STATS;
 	do_tx_xadd_range_commit(pop);
-	
+
 	pmemobj_close(pop);
-	
+
 	DONE(NULL);
 }
