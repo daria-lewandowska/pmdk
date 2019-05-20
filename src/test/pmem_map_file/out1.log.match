@@ -1,5 +1,25 @@
-pmem_map_file$(nW)TEST1: START: pmem_map_file$(nW)
+pmem_map_file$(nW)TEST1: START: pmem_map_file
  $(nW)pmem_map_file$(nW) $(*)
+$(OPT) $(nW)pmem_map_file$(*)testfile1 0 - 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile2 0 C 0666 0 0
+$(OPT) $(nW)pmem_map_file$(*)testfile3 4096 C 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile4 0 E 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile5 4096 E 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile6 4096 CE 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile7 4096 CES 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile8 4096 CS 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile9 -1 C 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile10 4096 X 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile11 4096 CX 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*)testfile12 0x1FFFFFFFFFFFFFFF CE 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*) 0 T 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*) 4096 T 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*) 4096 TC 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*) 4096 TE 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*) 4096 TS 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*) 4096 TSE 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*) 4096 TCE 0666 1 1
+$(OPT) $(nW)pmem_map_file$(*) 4096 TSEC 0666 1 1 \nul\nonexistingdir 4096 T 0666 1 1
 $(nW)testfile1 0 - 666 1 1
 pmem_map_file: No such file or directory
 $(nW)testfile2 0 C 666 0 0
