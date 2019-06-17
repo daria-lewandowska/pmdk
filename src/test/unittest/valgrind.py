@@ -37,8 +37,7 @@ import subprocess as sp
 from enum import Enum, unique
 from os import path
 
-from helpers import ROOTDIR, VMMALLOC
-from utils import Skip
+import futils
 
 
 DISABLE = -1
@@ -202,7 +201,7 @@ class Valgrind:
         relative to tests root directory (pmdk/src/test)
         """
         self.opts = '{} --suppressions={}'.format(
-            self.opts, path.join(ROOTDIR, f))
+            self.opts, path.join(futils.ROOTDIR, f))
 
     def validate_log(self):
         """
@@ -216,7 +215,9 @@ class Valgrind:
         # remove ignored warnings from log file
         with open(self.log_file, 'r+') as f:
             no_ignored = [l for l in f if not any(w in l for w in _IGNORED)]
+            f.seek(0)
             f.writelines(no_ignored)
+            f.truncate()
 
         if path.isfile(self.log_file + '.match'):
             # if there is a Valgrind log match file, do nothing - log file
@@ -235,4 +236,4 @@ class Valgrind:
         Checks that Valgrind can be used.
         """
         if self.valgrind_exe is None:
-            raise Skip('Valgrind not found')
+            raise futils.Skip('Valgrind not found')

@@ -71,6 +71,7 @@ OBJ_TESTS = \
 	obj_sync\
 	\
 	obj_action\
+	obj_alloc\
 	obj_bucket\
 	obj_check\
 	obj_constructor\
@@ -131,6 +132,8 @@ OBJ_TESTS = \
 	obj_tx_alloc\
 	obj_tx_add_range\
 	obj_tx_add_range_direct\
+	obj_tx_xadd_range\
+	obj_tx_xadd_range_direct\
 	obj_tx_callbacks\
 	obj_tx_flow\
 	obj_tx_free\
@@ -206,6 +209,7 @@ PMEM_TESTS = \
 	pmem_is_pmem\
 	pmem_is_pmem_posix\
 	pmem_map_file\
+	pmem_map_file_trunc\
 	pmem_has_auto_flush\
 	pmem_deep_persist\
 	pmem_memcpy\
@@ -305,6 +309,7 @@ LIBPMEMPOOL_TESTS = \
 	libpmempool_include\
 	libpmempool_backup\
 	libpmempool_bttdev\
+	libpmempool_check_version\
 	libpmempool_feature\
 	libpmempool_map_flog\
 	libpmempool_rm
@@ -428,7 +433,7 @@ check:
 	@echo "No failures."
 
 pycheck:
-	@./RUNTESTS.py $(RUNTEST_OPTIONS)
+	@./RUNTESTS.py $(subst nondebug,release,$(RUNTEST_OPTIONS))
 	@echo "No failures."
 
 check-remote-quiet-conditional:
